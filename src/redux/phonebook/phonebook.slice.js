@@ -4,24 +4,39 @@ import { createSlice } from '@reduxjs/toolkit';
 const phonebookSlice = createSlice({
     name: 'phonebook',
     initialState: {
-        contacts: [],
-        filter: "",
+        contacts: {
+            items: [],
+            isLoading: false,
+            error: null,
+        },
+        filter: '',
     },
     reducers: {
-        addContactAction(state, { payload }) {
-            state.contacts.push(payload);
+        fetchingInProgres(state) {
+            state.contacts.isLoading = true;
         },
-        deleteContactAction(state, { payload }) {
-            state.contacts = state.contacts.filter(({ id }) => id !== payload);
+        fetchingSuccess(state, { payload }) {
+            state.contacts.isLoading = false;
+            state.contacts.error = null;
+            state.contacts.items = payload;
         },
+        fetchingError(state, { payload }) {
+            state.contacts.isLoading = false;
+            state.contacts.error = payload;
+        },
+        fetchingAddContactSuccess(state, { payload }) {
+            state.contacts.isLoading = false;
+            state.contacts.error = null;
+            state.contacts.items.push(payload);
+        },
+
         filterAction(state, { payload }) {
             state.filter = payload;
         },
     },
 });
 
-export const { addContactAction, deleteContactAction, filterAction } = phonebookSlice.actions;
+export const { addContactAction, deleteContactAction, filterAction, fetchingError, fetchingInProgres, fetchingSuccess, fetchingAddContactSuccess } =
+    phonebookSlice.actions;
 
-
-export const phonebookReducer = phonebookSlice.reducer
-
+export const phonebookReducer = phonebookSlice.reducer;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import css from './ContactItem.module.css';
 
-export const ContactItem = ({ name, number, id }) => {
+export const ContactItem = ({ name, phone, id }) => {
   const dispatch = useDispatch();
   const handleDelete = () => {
     dispatch(deleteContactAction(id));
@@ -12,7 +12,7 @@ export const ContactItem = ({ name, number, id }) => {
   return (
     <>
       <p>
-        {name}: {number}
+        {name}: {phone}
       </p>
       <button className={css.button} type="button" onClick={handleDelete}>
         Delete
@@ -22,6 +22,6 @@ export const ContactItem = ({ name, number, id }) => {
 };
 ContactItem.propTypes = {
   name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };

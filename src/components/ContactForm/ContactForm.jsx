@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addContactAction } from 'redux/phonebook/phonebook.slice';
 import { getContacts } from 'redux/phonebook/phonebook.selectors';
+import { fetchAddContact } from 'redux/phonebook/phonebook.thunk';
 import Notiflix from 'notiflix';
-import { nanoid } from '@reduxjs/toolkit';
 
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
-  const contacts = useSelector(getContacts);
+  const { items } = useSelector(getContacts);
+
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -29,15 +29,16 @@ export const ContactForm = () => {
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    const contact = { name, number, id: nanoid() };
-    const hasSameName = contacts.some(contact => contact.name === name);
+    const contact = { name, phone: number };
+    console.log(contact);
+    const hasSameName = items.some(contact => contact.name === name);
 
     hasSameName
       ? Notiflix.Notify.warning(`${name} is already in contacts`, {
           position: 'center-center',
           cssAnimationStyle: 'zoom',
         })
-      : dispatch(addContactAction(contact));
+      : dispatch(fetchAddContact(contact));
 
     hasSameName || (setName('') && hasSameName) || setNumber('');
   };
