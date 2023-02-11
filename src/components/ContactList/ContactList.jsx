@@ -1,17 +1,24 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/phonebook/phonebook.selectors';
+import {
+  selectError,
+  selectIsLoading,
+  selectItems,
+} from 'redux/contacts/contacts.selectors';
+import { selectFilter } from 'redux/filter/filter.selectors';
 import { ContactItem } from 'components/ContactItem/ContactItem';
-import { fetchGetContacts } from 'redux/phonebook/phonebook.thunk';
+import { fetchContactsThunk } from 'redux/contacts/contacts.thunk';
 
 import css from './ContactList.module.css';
 export const ContactList = () => {
-  const { items, isLoading, error } = useSelector(getContacts);
-  const filter = useSelector(getFilter);
+  const items = useSelector(selectItems);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
+  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchGetContacts());
+    dispatch(fetchContactsThunk());
   }, [dispatch]);
 
   const normalizedFilter = filter.toLowerCase();

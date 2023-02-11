@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { phonebookReducer } from "./phonebook/phonebook.slice";
+import { contactsReducer } from "./contacts/contacts.slice";
+import { filterReducer } from "./filter/filter.slice";
 
 
 export const store = configureStore({
     devTools: true,
     reducer: {
-        phonebook: phonebookReducer,
+        contacts: contactsReducer,
+        filter: filterReducer,
     },
 
 })

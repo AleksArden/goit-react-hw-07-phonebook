@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContacts } from 'redux/phonebook/phonebook.selectors';
-import { fetchAddContact } from 'redux/phonebook/phonebook.thunk';
+import { selectItems } from 'redux/contacts/contacts.selectors';
+import { addContactThunk } from 'redux/contacts/contacts.thunk';
 import Notiflix from 'notiflix';
 
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
-  const { items } = useSelector(getContacts);
+  const items = useSelector(selectItems);
 
   const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ export const ContactForm = () => {
   const handleSubmit = evt => {
     evt.preventDefault();
     const contact = { name, phone: number };
-    console.log(contact);
+
     const hasSameName = items.some(contact => contact.name === name);
 
     hasSameName
@@ -38,7 +38,7 @@ export const ContactForm = () => {
           position: 'center-center',
           cssAnimationStyle: 'zoom',
         })
-      : dispatch(fetchAddContact(contact));
+      : dispatch(addContactThunk(contact));
 
     hasSameName || (setName('') && hasSameName) || setNumber('');
   };
